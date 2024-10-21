@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 
 //IMPORT ROUTES
 import authRoutes from "./routes/user.routes";
+import categoryRouter from "./routes/category.routes";
 
 // Cargar las variables de entorno desde el archivo .env
 dotenv.config();
@@ -10,7 +11,8 @@ dotenv.config();
 const app = expres();
 app.use(expres.json());
 
-app.use("/api", authRoutes);
+app.use("/auth", authRoutes);
+app.use("/category", categoryRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

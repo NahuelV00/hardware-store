@@ -4,23 +4,23 @@ import prismadb from "../config/db";
 import { omitSensitiveData } from "../utils/utils";
 
 const createUserService = async (data: NewUserProps): Promise<UserSafeProps> => {
-  const { name, password, email, lastName } = data;
+  const { name, password, email, username } = data;
 
   const existUser = await prismadb.user.findFirst({
     where: {
-      email: email,
+      OR: [{ email: email || undefined }, { username: username || undefined }],
     },
   });
 
-  if (!existUser) {
+  if (existUser) {
     throw new CustomErrorImpl(400, "User already exist.");
   }
   try {
     const hashedPassword = await hashPassword(password);
     const user: UserProps = await prismadb.user.create({
       data: {
+        username,
         name,
-        lastName,
         password: hashedPassword,
         email,
       },
@@ -32,10 +32,11 @@ const createUserService = async (data: NewUserProps): Promise<UserSafeProps> => 
 };
 
 const loginService = async (data: LoginProps): Promise<object> => {
+  //email = email || username
   const { email, password } = data;
   const user = await prismadb.user.findFirst({
     where: {
-      email,
+      OR: [{ email: email || undefined }, { username: email || undefined }],
     },
   });
 
@@ -43,17 +44,29 @@ const loginService = async (data: LoginProps): Promise<object> => {
     throw new CustomErrorImpl(401, "Invalid credentials. Please check your email and password.");
   }
   if (await comparePassword(password, user.password)) {
-    throw new CustomErrorImpl(401, "Invalid credentials. Please check your email and password.");
+    throw new CustomErrorImpl(401, "Invalid credentials. Please check your email and password 2.");
   }
 
   const jwtData = {
     id: user.id,
     name: user.name,
-    lastName: user.lastName,
+    username: user.username,
     isAdmin: user.isAdmin,
   };
-
   return jwtData;
 };
 
-export { createUserService, loginService };
+const isAdmin = async (userId: string): Promise<boolean> => {
+  const user = await prismadb.user.findUnique({
+    where: { id: userId },
+    select: { isAdmin: true },
+  });
+  //If user not exist
+  if (!user) {
+    throw new CustomErrorImpl(401, "Unaothorized");
+  }
+  //return "isAdmin" state
+  return user.isAdmin;
+};
+
+export { createUserService, loginService, isAdmin };

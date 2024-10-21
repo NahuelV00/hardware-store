@@ -4,8 +4,8 @@ import { Request } from "express";
 //Full user props
 export interface UserProps {
   id: string;
+  username: string;
   name: string;
-  lastName: string;
   email: string;
   password: string;
   isAdmin?: boolean;
@@ -13,8 +13,8 @@ export interface UserProps {
 //Secure Info
 export interface UserSafeProps {
   id: string;
+  username: string;
   name: string;
-  lastName: string;
   email: string;
   isAdmin?: boolean;
 }
@@ -24,6 +24,14 @@ export type NewUserProps = Omit<UserProps, "id" | "isAdmin">;
 
 //Necesary info to log In
 export type LoginProps = Pick<UserProps, "email" | "password">;
+
+//-------------- CATEGORY MODEL ---------------------
+export interface CategoryProps {
+  id: string;
+  name: string;
+  isActive: boolean;
+}
+export type NewCategoryProps = Omit<CategoryProps, "id" | "isActive">;
 
 //------------------- CUSTOM ERROR ---------------------------
 export interface CustomError {

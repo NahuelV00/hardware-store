@@ -15,9 +15,15 @@ datasource db {
 
 model User{
   id String @id @default(cuid()) @map("_id")
+  username String @unique
   name String
-  lastName String
   email String @unique
   password String
   isAdmin Boolean @default(false)
+}
+
+model Category{
+  id String @id @default(cuid()) @map("_id")
+  name String
+  isActive Boolean @default(false)
 }
