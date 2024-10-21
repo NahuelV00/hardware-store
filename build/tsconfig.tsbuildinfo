@@ -1,0 +1,1 @@
+{"root":["../src/index.ts","../src/config/db.ts","../src/controller/authcontroller.ts","../src/routes/user.routes.ts","../src/services/authservices.ts","../src/types/types.ts","../src/utils/hashpassword.ts","../src/utils/jwtutils.ts"],"errors":true,"version":"5.6.3"}

@@ -1,5 +1,7 @@
-//USER MODEL
+import { Request } from "express";
 
+//-------------- USER MODEL ---------------
+//Full user props
 export interface UserProps {
   id: string;
   name: string;
@@ -8,8 +10,20 @@ export interface UserProps {
   password: string;
   isAdmin?: boolean;
 }
+//Secure Info
+export interface UserSafeProps {
+  id: string;
+  name: string;
+  lastName: string;
+  email: string;
+  isAdmin?: boolean;
+}
 
+//Necesary info to create user
 export type NewUserProps = Omit<UserProps, "id" | "isAdmin">;
+
+//Necesary info to log In
+export type LoginProps = Pick<UserProps, "email" | "password">;
 
 //------------------- CUSTOM ERROR ---------------------------
 export interface CustomError {
@@ -27,4 +41,10 @@ export class CustomErrorImpl extends Error implements CustomError {
     Object.setPrototypeOf(this, new.target.prototype);
     this.name = this.constructor.name; // Nombre de la clase
   }
+}
+
+//--------------- CUSTOM REQUEST -----------------
+
+export interface CustomRequest extends Request {
+  userId?: string;
 }

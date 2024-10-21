@@ -1,7 +1,16 @@
-import { Router } from "express";
+import express, { Request, Response } from "express";
+import { createUserController, loginController } from "../controller/authController";
 
-const router = Router();
+const router = express.Router();
 
-router.post("/login");
+router.post("/register", (req: Request, res: Response) => {
+  createUserController(req, res);
+});
+
+router.post("/login", (req: Request, res: Response) => {
+  loginController(req, res);
+});
+
+//TODO: Change password, Forgot Password
 
 export default router;
