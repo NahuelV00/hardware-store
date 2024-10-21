@@ -44,7 +44,7 @@ const loginService = async (data: LoginProps): Promise<object> => {
     throw new CustomErrorImpl(401, "Invalid credentials. Please check your email and password.");
   }
   if (await comparePassword(password, user.password)) {
-    throw new CustomErrorImpl(401, "Invalid credentials. Please check your email and password 2.");
+    throw new CustomErrorImpl(401, "Invalid credentials. Please check your email and password.");
   }
 
   const jwtData = {
