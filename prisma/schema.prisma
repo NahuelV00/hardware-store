@@ -26,4 +26,15 @@ model Category{
   id String @id @default(cuid()) @map("_id")
   name String
   isActive Boolean @default(false)
+  subCategories SubCategory[]
+}
+
+model SubCategory{
+  id String @id @default(cuid()) @map("_id")
+  name String
+  isActive Boolean @default(false)
+  categoryId String
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId])
 }

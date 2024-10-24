@@ -25,13 +25,26 @@ export type NewUserProps = Omit<UserProps, "id" | "isAdmin">;
 //Necesary info to log In
 export type LoginProps = Pick<UserProps, "email" | "password">;
 
-//-------------- CATEGORY MODEL ---------------------
+//---------------------- CATEGORY MODEL ----------------------
 export interface CategoryProps {
   id: string;
   name: string;
   isActive: boolean;
+  subCategories?: SensitiveSubCategoryProps[];
 }
-export type NewCategoryProps = Omit<CategoryProps, "id" | "isActive">;
+export type NewCategoryProps = Omit<CategoryProps, "id" | "isActive" | "subCategories">;
+
+//-------------------- SUBCATEGORY MODEL ---------------------
+export interface SubCategoryProps {
+  id: string;
+  name: string;
+  isActive: boolean;
+  categoryId: string;
+}
+
+export type NewSubCategoryProps = Omit<SubCategoryProps, "id" | "isActive">;
+export type ModifySubCategoryProps = Omit<SubCategoryProps, "id" | "isActive" | "categoryId">;
+export type SensitiveSubCategoryProps = Omit<SubCategoryProps, "categoryId">;
 
 //------------------- CUSTOM ERROR ---------------------------
 export interface CustomError {

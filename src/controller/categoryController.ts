@@ -8,7 +8,7 @@ const getAllCategoriesController = async (_req: CustomRequest, res: Response) =>
   try {
     //Call getAllService
     const allCategories = await getAllCategoriesService();
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
       data: allCategories,
     });
@@ -64,7 +64,7 @@ const modifyCategoryController = async (req: CustomRequest, res: Response) => {
   try {
     if (await isAdmin(userId as string)) {
       const modifiedCategory = await modifyCategoryService(newData, categoryId);
-      return res.status(201).json({
+      return res.status(200).json({
         success: true,
         message: "Category modified correctly.",
         data: modifiedCategory,
