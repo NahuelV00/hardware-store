@@ -43,6 +43,7 @@ export interface SubCategoryProps {
 }
 
 export type NewSubCategoryProps = Omit<SubCategoryProps, "id" | "isActive">;
+export type ModifySubCategoryProps = Omit<SubCategoryProps, "id" | "isActive" | "categoryId">;
 export type SensitiveSubCategoryProps = Omit<SubCategoryProps, "categoryId">;
 
 //------------------- CUSTOM ERROR ---------------------------

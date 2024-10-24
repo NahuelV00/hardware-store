@@ -1,7 +1,7 @@
 import express, { NextFunction, Response } from "express";
 import { CustomRequest } from "../types/types";
 import { checkAuth } from "../middleware/checkAuth";
-import { createSubCategoryController } from "../controller/subCategoryController";
+import { createSubCategoryController, deleteSubCategoryController, modifySubCategoryController } from "../controller/subCategoryController";
 
 const router = express.Router();
 
@@ -16,25 +16,24 @@ router.post(
   }
 );
 
-/* router.patch(
-  "/:categoryId",
+router.patch(
+  "/:subcategoryId",
   (req: CustomRequest, res: Response, next: NextFunction) => {
     checkAuth(req, res, next);
   },
   (req: CustomRequest, res: Response) => {
-    modifyCategoryController(req, res);
+    modifySubCategoryController(req, res);
   }
 );
 
 router.delete(
-  "/:categoryId",
+  "/:subcategoryId",
   (req: CustomRequest, res: Response, next: NextFunction) => {
     checkAuth(req, res, next);
   },
   (req: CustomRequest, res: Response) => {
-    deleteCategoryController(req, res);
+    deleteSubCategoryController(req, res);
   }
 );
- */
 
 export default router;
