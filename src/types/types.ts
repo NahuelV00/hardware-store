@@ -69,3 +69,41 @@ export class CustomErrorImpl extends Error implements CustomError {
 export interface CustomRequest extends Request {
   userId?: string;
 }
+
+//------------- PRODUCT MODEL ----------------------
+export interface ProductProps {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  subCategoryId: string;
+  //stock relation
+  stock?: Stock | null;
+}
+
+export type NewProductProps = Omit<ProductProps, "id" | "isActive" | "createdAt" | "updatedAt" | "stock"> & {
+  quantity: number;
+};
+
+export interface ModifyProductProps {
+  name?: string;
+  description?: string;
+  price?: number;
+  isActive?: boolean;
+  subCategoryId?: string;
+  stock?: {
+    quantity?: number;
+  };
+}
+
+export interface Stock {
+  id: string;
+  quantity: number;
+  productId: string;
+
+  //Update Stock history
+  //updates StockUpdate[]
+}

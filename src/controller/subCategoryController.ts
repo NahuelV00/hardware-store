@@ -43,7 +43,7 @@ const modifySubCategoryController = async (req: CustomRequest, res: Response) =>
       const modifiedSubCategory = await modifySubCategoryService(newData, categoryId);
       return res.status(200).json({
         success: true,
-        message: "Subcategory created",
+        message: "Subcategory modified correctly.",
         data: modifiedSubCategory,
       });
     }
