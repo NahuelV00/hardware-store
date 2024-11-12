@@ -20,12 +20,14 @@ model User{
   email String @unique
   password String
   isAdmin Boolean @default(false)
+
+  orders   Order[] 
 }
 
 model Category{
   id String @id @default(cuid()) @map("_id")
   name String
-  isActive Boolean @default(false)
+  isActive Boolean @default(true)
   subCategories SubCategory[]
 }
 
@@ -59,6 +61,7 @@ model Product{
 
   //stock relation
   stock Stock?
+  orderItems OrderItem[]
 
   @@index([subCategoryId])
 }
@@ -71,4 +74,36 @@ model Stock{
 
   //Update Stock history
   //updates StockUpdate[]
+}
+
+model Order {
+  id             String      @id @default(cuid()) @map("_id")
+  userId         String
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderItems     OrderItem[]
+  totalAmount    Float       @default(0.0)
+  status         OrderStatus @default(PENDING)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  address        String?
+  shippingMethod String?
+}
+
+enum OrderStatus {
+  PENDING    // Pedido creado, pero aún no procesado
+  PROCESSING // Pedido en proceso
+  SHIPPED    // Pedido enviado
+  DELIVERED  // Pedido entregado
+  CANCELLED  // Pedido cancelado
+}
+
+model OrderItem {
+  id         String   @id @default(cuid()) @map("_id")
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity   Int      @default(1)
+  price      Float    // Precio del producto al momento de la compra
+  totalPrice Float    // precio * cantidad
 }

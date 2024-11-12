@@ -1,4 +1,5 @@
 import { Request } from "express";
+import {Order, OrderStatus} from "@prisma/client";
 
 //-------------- USER MODEL ---------------
 //Full user props
@@ -106,4 +107,56 @@ export interface Stock {
 
   //Update Stock history
   //updates StockUpdate[]
+}
+
+//--------------- ORDERS PROPS -------------------
+export interface OrderItem {
+  id: string;
+  productId: string;
+  quantity: number;
+  price: number;
+  totalPrice: number;
+}
+
+export interface OrderProps {
+  id: string;
+  userId: string;
+  orderItems: OrderItem[];
+  totalAmount: number
+  status: OrderStatus;
+  createdAt: Date;
+  updatedAt: Date;
+  address?: string | null;
+  shippingMethod?: string | null;
+}
+
+export type NewOrderItem = Omit<OrderItem, "id" | "price" | "totalPrice">
+
+export interface NewOrderProps {
+  items: NewOrderItem[];
+  address?: string;
+  shippingMethod?: string;
+}
+
+export interface UpdateOrderStatusProps {
+  orderId: string;
+  status: OrderStatus;
+}
+
+export interface CreateOrderResponse {
+  order: Order;
+  message: string;
+}
+
+export interface GetOrdersByUserResponse {
+  orders: Order[];
+}
+
+export interface GetOrderByIdResponse {
+  order: Order | null;
+}
+
+export interface UpdateOrderStatusResponse {
+  order: Order;
+  message: string;
 }
