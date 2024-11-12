@@ -14,7 +14,7 @@ const createOrderService = async (userId: string,
         })
         if (!product) throw new CustomErrorImpl(200, `Product with ID: ${item.productId} not found`)
         if (!product.stock || product.stock.quantity < item.quantity) {
-            throw new CustomErrorImpl(200,`Insufficient stock for product ${product.name}`);
+            throw new CustomErrorImpl(200, `Insufficient stock for product ${product.name}`);
         }
         await prismadb.stock.update({
             where: {productId: item.productId},
@@ -47,4 +47,18 @@ const createOrderService = async (userId: string,
     return order
 }
 
-export {createOrderService}
+const updateStatusOrderService = async (orderId: string, status: OrderStatus) => {
+    const order = await prismadb.order.findUnique({
+        where: {id: orderId},
+    })
+    if (!order) throw new CustomErrorImpl(200, `Order with ID: ${orderId} not found`)
+    const orderUpdated = await prismadb.order.update({
+        where: {id: orderId},
+        data: {
+            status
+        }
+    })
+    return orderUpdated
+}
+
+export {createOrderService, updateStatusOrderService}

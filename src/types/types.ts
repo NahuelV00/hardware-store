@@ -139,7 +139,6 @@ export interface NewOrderProps {
 }
 
 export interface UpdateOrderStatusProps {
-  orderId: string;
   status: OrderStatus;
 }
 
