@@ -2,6 +2,55 @@ import prismadb from "../config/db";
 import {OrderStatus} from "@prisma/client";
 import {CustomErrorImpl} from "../types/types";
 
+const getOrderByIdService = async (orderId: string) => {
+    const order = await prismadb.order.findUnique({
+        where: {id: orderId},
+        select: {
+            id: true,
+            userId: true,
+            totalAmount: true,
+            status: true,
+            createdAt: true,
+            updatedAt: true,
+            address: true,
+            shippingMethod: true,
+            orderItems: true,
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true
+                }
+            }
+        }
+    })
+    return order
+}
+
+const getAllOrdersService = async () => {
+    const orders = await prismadb.order.findMany({
+        select: {
+            id: true,
+            userId: true,
+            totalAmount: true,
+            status: true,
+            createdAt: true,
+            updatedAt: true,
+            address: true,
+            shippingMethod: true,
+            orderItems: true,
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true
+                }
+            }
+        }
+    })
+    return orders
+}
+
 const createOrderService = async (userId: string,
                                   items: { productId: string; quantity: number }[],
                                   address?: string | undefined,
@@ -48,10 +97,7 @@ const createOrderService = async (userId: string,
 }
 
 const updateStatusOrderService = async (orderId: string, status: OrderStatus) => {
-    const order = await prismadb.order.findUnique({
-        where: {id: orderId},
-    })
-    if (!order) throw new CustomErrorImpl(200, `Order with ID: ${orderId} not found`)
+
     const orderUpdated = await prismadb.order.update({
         where: {id: orderId},
         data: {
@@ -61,4 +107,4 @@ const updateStatusOrderService = async (orderId: string, status: OrderStatus) =>
     return orderUpdated
 }
 
-export {createOrderService, updateStatusOrderService}
+export {createOrderService, updateStatusOrderService, getAllOrdersService, getOrderByIdService}

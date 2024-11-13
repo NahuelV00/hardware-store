@@ -1,5 +1,5 @@
 import { Request } from "express";
-import {Order, OrderStatus} from "@prisma/client";
+import {Order} from "@prisma/client";
 
 //-------------- USER MODEL ---------------
 //Full user props
@@ -121,6 +121,7 @@ export interface OrderItem {
 export interface OrderProps {
   id: string;
   userId: string;
+  user: UserProps;
   orderItems: OrderItem[];
   totalAmount: number
   status: OrderStatus;
@@ -158,4 +159,12 @@ export interface GetOrderByIdResponse {
 export interface UpdateOrderStatusResponse {
   order: Order;
   message: string;
+}
+
+export enum OrderStatus {
+  PENDING = "PENDING",
+  PROCESSING = "PROCESSING",
+  SHIPPED = "SHIPPED",
+  DELIVERED = "DELIVERED",
+  CANCELLED = "CANCELLED"
 }
